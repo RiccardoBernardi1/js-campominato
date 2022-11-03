@@ -15,7 +15,8 @@
 // FUNCTIONS
 
 function addGrid (cellNum,container){
-    let gameOver=false;
+    const userPoints=document.getElementById("points");
+    const gameOver=document.getElementById("game-over");
     let points=0;
     for (let i = 1; i <= cellNum; i++) {
         const boardCell=document.createElement("div");
@@ -29,21 +30,28 @@ function addGrid (cellNum,container){
             boardCell.classList.add("board-cell-7")
         }
         container.append(boardCell);
-       
+        userPoints.innerHTML=`Il tuo punteggio è : ${points}`
         boardCell.addEventListener("click", function myFunction(){
             if(endGame!=true&&!(bombs.includes(Number(boardCell.innerHTML)))){
                 this.classList.add("light-blue");
                 this.removeEventListener("click",myFunction);
                 points+=1;
-                console.log(points)
+                userPoints.innerHTML=`Il tuo punteggio è : ${points}` 
                 if(points===cellNum-bombs.length){
                     endGame()
+                    gameOver.classList.remove("d-none");
+                    gameOver.innerHTML=`Hai vinto!!!`
+                    userPoints.innerHTML=`Il tuo punteggio è : ${points}`;
                 }
             }else if(endGame!=true&&bombs.includes(Number(boardCell.innerHTML))){
                 endGame()
+                gameOver.classList.remove("d-none");
+                gameOver.innerHTML=`Hai perso !`
+                userPoints.innerHTML=`Il tuo punteggio è : ${points}`;
             }
         });
-    } 
+    }
+    userPoints.classList.remove("d-none"); 
 }
 function bombGen (bombNum,cellNum){
     while(bombs.length<bombNum){
@@ -81,7 +89,8 @@ btn.addEventListener("click",function(){
     }else{
         cells=49;
     }
-    bombGen (1,cells);
+    bombGen (16,cells);
     console.log(bombs)
     addGrid (cells,board);
 });
+
