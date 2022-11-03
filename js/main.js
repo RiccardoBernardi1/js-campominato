@@ -15,9 +15,12 @@
 // FUNCTIONS
 
 function addGrid (cellNum,container){
+    let gameOver=false;
+    let points=0;
     for (let i = 1; i <= cellNum; i++) {
         const boardCell=document.createElement("div");
         boardCell.innerHTML=i;
+        boardCells.push(boardCell);
         if (cellNum==100){
             boardCell.classList.add("board-cell-10")
         }else if(cellNum==81){
@@ -26,10 +29,18 @@ function addGrid (cellNum,container){
             boardCell.classList.add("board-cell-7")
         }
         container.append(boardCell);
-        boardCell.addEventListener("click", function (){
-            if(!(bombs.includes(this))){
+       
+        boardCell.addEventListener("click", function myFunction(){
+            if(endGame!=true&&!(bombs.includes(Number(boardCell.innerHTML)))){
                 this.classList.add("light-blue");
-                this.removeEventListener("click");
+                this.removeEventListener("click",myFunction);
+                points+=1;
+                console.log(points)
+                if(points===cellNum-bombs.length){
+                    endGame()
+                }
+            }else if(endGame!=true&&bombs.includes(Number(boardCell.innerHTML))){
+                endGame()
             }
         });
     } 
@@ -42,9 +53,20 @@ function bombGen (bombNum,cellNum){
         }
     } 
 }
+function endGame(){
+    for (let index = 0; index < boardCells.length; index++) {
+        if(bombs.includes(Number(boardCells[index].innerHTML))){
+            boardCells[index].classList.add("red");
+        }else{
+            boardCells[index].classList.add("light-blue");
+        }
+    }
+    return true;
+}
 //MAIN
 
 let bombs=[];
+const boardCells=[];
 const board=document.querySelector(".board");
 const btn=document.getElementById("btn");
 let cells=0;
@@ -59,6 +81,7 @@ btn.addEventListener("click",function(){
     }else{
         cells=49;
     }
-    bombGen (16,cells);
+    bombGen (1,cells);
+    console.log(bombs)
     addGrid (cells,board);
 });

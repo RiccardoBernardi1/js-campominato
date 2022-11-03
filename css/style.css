@@ -65,6 +65,9 @@ main{
 .light-blue{
     background-color: #7FFFD4;
 }
+.red{
+    background-color: red;
+}
 .d-none{
     display: none;
 }
