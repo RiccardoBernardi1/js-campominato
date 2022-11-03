@@ -4,7 +4,7 @@
 // 1b. Creare la casella 
 // 1c. Inserire il numero nella casella
 // 1d. Aggiungere alle caselle la loro classe css 
-// 1e. Inesire la casella nel contenitore
+// 1e. Inserire la casella nel contenitore
 // 2. Creare un bottone che generi la griglia al click
 // 3. Generare un array di 16 numeri casuali tra 1 e il numero di caselle
 // 4. Verificare che ogni numero generato non sia già nell'array
@@ -27,13 +27,24 @@ function addGrid (cellNum,container){
         }
         container.append(boardCell);
         boardCell.addEventListener("click", function (){
-            this.classList.add("light-blue");
-            console.log(this.innerHTML)
+            if(!(bombs.includes(this))){
+                this.classList.add("light-blue");
+                this.removeEventListener("click");
+            }
         });
+    } 
+}
+function bombGen (bombNum,cellNum){
+    while(bombs.length<bombNum){
+        let bomb = Math.floor(Math.random() * (cellNum - 1 + 1) ) + 1;
+        if(!(bombs.includes(bomb))){
+            bombs.push(bomb);
+        }
     } 
 }
 //MAIN
 
+let bombs=[];
 const board=document.querySelector(".board");
 const btn=document.getElementById("btn");
 let cells=0;
@@ -48,5 +59,6 @@ btn.addEventListener("click",function(){
     }else{
         cells=49;
     }
+    bombGen (16,cells);
     addGrid (cells,board);
 });
