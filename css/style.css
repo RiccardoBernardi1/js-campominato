@@ -48,6 +48,7 @@ main{
     align-content: flex-start;
     margin-bottom: 2.5rem;
     background-color: bisque;
+    position: relative;
 }
 .board-cell-10{
     width: calc(100% / 10);
@@ -86,6 +87,14 @@ main{
 #game-over{
     font-weight: bold;
     font-size: 1.875rem;
+}
+.block{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    
 }
 /* FOOTER */
 footer{

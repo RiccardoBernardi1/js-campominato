@@ -17,7 +17,9 @@
 function addGrid (cellNum,container){
     const userPoints=document.getElementById("points");
     const gameOver=document.getElementById("game-over");
+    const block=document.querySelector(".block");
     let points=0;
+    let over=false;
     for (let i = 1; i <= cellNum; i++) {
         const boardCell=document.createElement("div");
         boardCell.innerHTML=i;
@@ -32,28 +34,30 @@ function addGrid (cellNum,container){
         container.append(boardCell);
         userPoints.innerHTML=`Il tuo punteggio è : ${points}`
         boardCell.addEventListener("click", function myFunction(){
-            if(endGame!=true&&!(bombs.includes(Number(boardCell.innerHTML)))){
+            if(endGame!=true&&!(bombs.includes(Number(boardCell.innerHTML)))&&over===false){
                 this.classList.add("light-blue");
                 this.removeEventListener("click",myFunction);
                 points+=1;
                 userPoints.innerHTML=`Il tuo punteggio è : ${points}` 
                 if(points===cellNum-bombs.length){
-                    endGame()
+                    endGame();
                     gameOver.classList.remove("d-none");
-                    gameOver.innerHTML=`Hai vinto!!!`
+                    gameOver.innerHTML=`Hai vinto!!!`;
                     userPoints.innerHTML=`Il tuo punteggio è : ${points}`;
                 }
-            }else if(endGame!=true&&bombs.includes(Number(boardCell.innerHTML))){
-                endGame()
+            }else if(endGame!=false&&bombs.includes(Number(boardCell.innerHTML))){
+                endGame();
                 gameOver.classList.remove("d-none");
-                gameOver.innerHTML=`Hai perso !`
+                gameOver.innerHTML=`Hai perso !`;
                 userPoints.innerHTML=`Il tuo punteggio è : ${points}`;
+                over=true;
             }
         });
     }
     userPoints.classList.remove("d-none"); 
 }
 function bombGen (bombNum,cellNum){
+    bombs=[];
     while(bombs.length<bombNum){
         let bomb = Math.floor(Math.random() * (cellNum - 1 + 1) ) + 1;
         if(!(bombs.includes(bomb))){
